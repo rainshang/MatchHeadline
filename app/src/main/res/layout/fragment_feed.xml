@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.feed.FeedFragment">
+
+    <data>
+
+        <variable
+            name="feedsViewModel"
+            type="com.xyx.matchheadline.ui.FeedsViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/padding_content">
+
+        <TextView
+            android:id="@+id/standFirst"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{feedsViewModel.feedsResp.items[feedsViewModel.index].standFirst}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/image"
+            imageUrl="@{feedsViewModel.feedsResp.items[feedsViewModel.index].imageUrl}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_content"
+            android:adjustViewBounds="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/standFirst" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

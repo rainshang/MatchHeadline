@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MatchHeadline</string>
+    <string name="tip_latest_data">No updated data found.</string>
+    <string name="tip_data_updated">Data updated</string>
 </resources>
