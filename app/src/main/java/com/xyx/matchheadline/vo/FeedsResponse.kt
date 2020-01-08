@@ -1,7 +1,9 @@
 package com.xyx.matchheadline.vo
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 data class FeedsResponse(
     @SerializedName("items")
@@ -13,6 +15,7 @@ data class FeedsResponse(
     @SerializedName("version")
     val version: Int
 ) {
+    @Parcelize
     data class Feed(
         @SerializedName("correctAnswerIndex")
         val correctAnswerIndex: Int,
@@ -26,5 +29,5 @@ data class FeedsResponse(
         val standFirst: String,
         @SerializedName("storyUrl")
         val storyUrl: String
-    )
+    ) : Parcelable
 }

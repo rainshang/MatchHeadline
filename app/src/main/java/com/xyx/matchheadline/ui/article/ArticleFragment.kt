@@ -16,7 +16,7 @@ import androidx.navigation.fragment.navArgs
  */
 class ArticleFragment : Fragment() {
 
-    val args: ArticleFragmentArgs by navArgs()
+    private val args: ArticleFragmentArgs by navArgs()
     private lateinit var webView: WebView
 
     @SuppressLint("SetJavaScriptEnabled")

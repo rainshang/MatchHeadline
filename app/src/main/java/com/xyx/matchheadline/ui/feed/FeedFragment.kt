@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.xyx.matchheadline.BR
 import com.xyx.matchheadline.R
 import com.xyx.matchheadline.databinding.FragmentFeedBinding
@@ -27,14 +28,23 @@ class FeedFragment : Fragment() {
     private val choiceListener = View.OnClickListener {
         val feed = feedsViewModel.feedsResp.value!!.items[feedsViewModel.index.value!!]
         val index = it.tag as Int
-        if (index == feed.correctAnswerIndex) {
-            feedsViewModel.score.value = (feedsViewModel.score.value ?: 0) + 2
-            feedsViewModel.index.value = (feedsViewModel.index.value ?: 0) + 1
-        } else {
-            feedsViewModel.score.value = (feedsViewModel.score.value ?: 0) - 1
-            feedsViewModel.index.value = (feedsViewModel.index.value ?: 0) + 1
-        }
-        // TODO goto result
+
+        findNavController()
+            .navigate(
+                FeedFragmentDirections.actionFeedFragmentToResultFragment(
+                    feed,
+                    if (index == feed.correctAnswerIndex) {
+                        feedsViewModel.score.value = (feedsViewModel.score.value ?: 0) + 2
+                        feedsViewModel.index.value = (feedsViewModel.index.value ?: 0) + 1
+                        true
+                    } else {
+                        feedsViewModel.score.value = (feedsViewModel.score.value ?: 0) - 1
+                        feedsViewModel.index.value = (feedsViewModel.index.value ?: 0) + 1
+                        false
+                    },
+                    feedsViewModel.score.value!!
+                )
+            )
     }
 
     override fun onCreateView(

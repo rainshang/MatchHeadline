@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.findNavController
 import com.xyx.matchheadline.api.FeedApi
-import com.xyx.matchheadline.ui.feed.FeedFragmentDirections
+import com.xyx.matchheadline.ui.result.ResultFragmentDirections
 import com.xyx.matchheadline.vo.FeedsResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -38,12 +38,6 @@ class FeedsViewModel : ViewModel() {
 
     fun onSkipClick() {
         index.value = (index.value ?: 0) + 1
-    }
-
-    fun onMoreClick(v: View) {
-        val action =
-            FeedFragmentDirections.actionFeedFragmentToArticleFragment(feedsResp.value!!.items[index.value!!].storyUrl)
-        v.findNavController().navigate(action)
     }
 
     fun calculateProgress(index: Int, total: Int): Int {

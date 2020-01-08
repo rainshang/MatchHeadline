@@ -64,7 +64,7 @@
                     android:paddingLeft="@dimen/padding_content"
                     android:paddingRight="@dimen/padding_content"
                     android:text="@{String.valueOf(feedsViewModel.score)}"
-                    android:textSize="17sp"
+                    android:textSize="@dimen/text_size"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@id/scoreTitle0"
                     app:layout_constraintStart_toEndOf="@id/scoreTitle0"
@@ -78,6 +78,16 @@
                     app:layout_constraintBottom_toBottomOf="@id/score"
                     app:layout_constraintStart_toEndOf="@id/score" />
 
+                <TextView
+                    android:id="@+id/progressText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_content"
+                    android:text="@{feedsViewModel.index + `/` + feedsViewModel.feedsResp.resultSize}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/score"
+                    tools:text="50/355" />
+
                 <ProgressBar
                     android:id="@+id/progress"
                     style="@style/Widget.AppCompat.ProgressBar.Horizontal"
@@ -85,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/padding_content"
                     android:progress="@{feedsViewModel.calculateProgress(feedsViewModel.index, feedsViewModel.feedsResp.resultSize)}"
-                    app:layout_constraintTop_toBottomOf="@id/score"
+                    app:layout_constraintTop_toBottomOf="@id/progressText"
                     tools:progress="50" />
 
                 <LinearLayout
@@ -98,28 +108,13 @@
 
                 <Button
                     android:id="@+id/btnSkip"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/padding_content"
                     android:enabled="@{feedsViewModel.index &lt; feedsViewModel.feedsResp.resultSize - 1}"
                     android:onClick="@{()->feedsViewModel.onSkipClick()}"
                     android:text="@string/txt_skip"
                     android:textAllCaps="false"
-                    app:layout_constraintEnd_toStartOf="@id/btnMore"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/btnContainer" />
-
-                <Button
-                    android:id="@+id/btnMore"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/padding_content"
-                    android:enabled="@{feedsViewModel.index &lt; feedsViewModel.feedsResp.resultSize}"
-                    android:onClick="@{(view)->feedsViewModel.onMoreClick(view)}"
-                    android:text="@string/btn_more"
-                    android:textAllCaps="false"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/btnSkip"
                     app:layout_constraintTop_toBottomOf="@id/btnContainer" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
