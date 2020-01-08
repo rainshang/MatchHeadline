@@ -1,5 +1,12 @@
 <resources>
     <string name="app_name">MatchHeadline</string>
-    <string name="tip_latest_data">No updated data found.</string>
-    <string name="tip_data_updated">Data updated</string>
+    <string name="tip_latest_data">No updated data found. Continue.</string>
+    <string name="tip_data_updated">Data updated. Start from beginning.</string>
+    <string name="txt_score_title0">You\'ve got</string>
+    <string name="txt_score_title1">points.</string>
+    <string name="txt_skip">Skip</string>
+    <string name="btn_more">Read Article</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

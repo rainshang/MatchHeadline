@@ -6,35 +6,126 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="feedsViewModel"
             type="com.xyx.matchheadline.ui.FeedsViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/srl"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="@dimen/padding_content">
+        android:layout_height="wrap_content"
+        app:refreshing="@{feedsViewModel.isLoading}">
 
-        <TextView
-            android:id="@+id/standFirst"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{feedsViewModel.feedsResp.items[feedsViewModel.index].standFirst}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:visibility="@{feedsViewModel.isLoading ? View.GONE: View.VISIBLE}">
 
-        <ImageView
-            android:id="@+id/image"
-            imageUrl="@{feedsViewModel.feedsResp.items[feedsViewModel.index].imageUrl}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/padding_content"
-            android:adjustViewBounds="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/standFirst" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_content">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/standFirst"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{feedsViewModel.feedsResp.items[feedsViewModel.index].standFirst}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/image"
+                    imageUrl="@{feedsViewModel.feedsResp.items[feedsViewModel.index].imageUrl}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_content"
+                    android:adjustViewBounds="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/standFirst" />
+
+                <TextView
+                    android:id="@+id/scoreTitle0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_content"
+                    android:text="@string/txt_score_title0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/image" />
+
+                <TextView
+                    android:id="@+id/score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/padding_content"
+                    android:paddingRight="@dimen/padding_content"
+                    android:text="@{String.valueOf(feedsViewModel.score)}"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@id/scoreTitle0"
+                    app:layout_constraintStart_toEndOf="@id/scoreTitle0"
+                    tools:text="8" />
+
+                <TextView
+                    android:id="@+id/scoreTitle1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/txt_score_title1"
+                    app:layout_constraintBottom_toBottomOf="@id/score"
+                    app:layout_constraintStart_toEndOf="@id/score" />
+
+                <ProgressBar
+                    android:id="@+id/progress"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_content"
+                    android:progress="@{feedsViewModel.calculateProgress(feedsViewModel.index, feedsViewModel.feedsResp.resultSize)}"
+                    app:layout_constraintTop_toBottomOf="@id/score"
+                    tools:progress="50" />
+
+                <LinearLayout
+                    android:id="@+id/btnContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_content"
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toBottomOf="@id/progress" />
+
+                <Button
+                    android:id="@+id/btnSkip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_content"
+                    android:enabled="@{feedsViewModel.index &lt; feedsViewModel.feedsResp.resultSize - 1}"
+                    android:onClick="@{()->feedsViewModel.onSkipClick()}"
+                    android:text="@string/txt_skip"
+                    android:textAllCaps="false"
+                    app:layout_constraintEnd_toStartOf="@id/btnMore"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btnContainer" />
+
+                <Button
+                    android:id="@+id/btnMore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_content"
+                    android:enabled="@{feedsViewModel.index &lt; feedsViewModel.feedsResp.resultSize}"
+                    android:onClick="@{(view)->feedsViewModel.onMoreClick(view)}"
+                    android:text="@string/btn_more"
+                    android:textAllCaps="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/btnSkip"
+                    app:layout_constraintTop_toBottomOf="@id/btnContainer" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
 </layout>

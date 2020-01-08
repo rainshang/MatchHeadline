@@ -2,15 +2,11 @@ package com.xyx.matchheadline.ui
 
 import android.content.Context
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.material.snackbar.Snackbar
-import com.xyx.matchheadline.BR
 import com.xyx.matchheadline.R
-import com.xyx.matchheadline.databinding.ActivityMainBinding
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -49,31 +45,36 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
         val feedsViewModel = ViewModelProviders.of(this).get(FeedsViewModel::class.java)
-        DataBindingUtil
-            .setContentView<ActivityMainBinding>(this, R.layout.activity_main)
-            .apply {
-                lifecycleOwner = this@MainActivity
-                setVariable(BR.feedsViewModel, feedsViewModel)
-            }
 
         feedsViewModel.run {
+            score.value = totalScore
+            index.value = feedsIndex
+
             feedsResp.observe(this@MainActivity, Observer {
                 if (it.version == feedsVersion) {
-                    Snackbar.make(srl, getString(R.string.tip_latest_data), Snackbar.LENGTH_SHORT)
+                    Toast.makeText(
+                        applicationContext,
+                        getString(R.string.tip_latest_data),
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 } else {
-                    Snackbar.make(srl, getString(R.string.tip_latest_data), Snackbar.LENGTH_SHORT)
+                    Toast.makeText(
+                        applicationContext,
+                        getString(R.string.tip_data_updated),
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                     feedsVersion = it.version
-                    feedsIndex = 0
+                    index.value = 0
                 }
             })
-            loadFeeds()
-        }
+            score.observe(this@MainActivity, Observer { totalScore = it })
+            index.observe(this@MainActivity, Observer { feedsIndex = it })
 
-        srl.setOnRefreshListener {
-            feedsViewModel.loadFeeds()
+            loadFeeds()
         }
     }
 

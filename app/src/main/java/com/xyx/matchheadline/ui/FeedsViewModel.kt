@@ -1,10 +1,13 @@
 package com.xyx.matchheadline.ui
 
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.findNavController
 import com.xyx.matchheadline.api.FeedApi
+import com.xyx.matchheadline.ui.feed.FeedFragmentDirections
 import com.xyx.matchheadline.vo.FeedsResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -30,6 +33,24 @@ class FeedsViewModel : ViewModel() {
             } finally {
                 _isLoading.postValue(false)
             }
+        }
+    }
+
+    fun onSkipClick() {
+        index.value = (index.value ?: 0) + 1
+    }
+
+    fun onMoreClick(v: View) {
+        val action =
+            FeedFragmentDirections.actionFeedFragmentToArticleFragment(feedsResp.value!!.items[index.value!!].storyUrl)
+        v.findNavController().navigate(action)
+    }
+
+    fun calculateProgress(index: Int, total: Int): Int {
+        return if (total != 0) {
+            (index * 1.0 / total * 100).toInt()
+        } else {
+            0
         }
     }
 
